@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class EnemyMoveController : MonoBehaviour
 {
-    [SerializeField]
-    GameObject _gameManeger = null;
-    [SerializeField]
-    float _waitTime = 1f;
+    GameManager manager;
+    //[SerializeField]
+    //float _waitTime = 1f;
     [SerializeField]
     int _enemyHp = 1;
     [SerializeField] 
@@ -30,6 +29,7 @@ public class EnemyMoveController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _player = GameObject.FindGameObjectWithTag("Player");
         //_enemyBullet = GameObject.FindGameObjectWithTag("EnemyBullets");
         _rb = GetComponent<Rigidbody2D>();
@@ -40,7 +40,7 @@ public class EnemyMoveController : MonoBehaviour
     {
         if (_enemyHp <=  0)
         {
-            //_gameManeger.ScoreUpper();
+            manager.ScoreUpper();
             Destroy(this.gameObject);
         }
 
@@ -91,11 +91,11 @@ public class EnemyMoveController : MonoBehaviour
 
     void EnemyShoot()
     {
-        if (_waitTime < _time)
-        {
+        //if (_waitTime < _time)
+        //{
             //Debug.Log("Shot");
             Instantiate(_enemyBullet, this.gameObject.transform.position, Quaternion.identity);
-        }      
+        //}      
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -10,9 +10,15 @@ public class player_move : MonoBehaviour
 
     float time = 0;
 
+    Vector2 _transform;
+
+    [SerializeField] GameManager _gameManager;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+
+        _transform = transform.position;
     }
 
     private void Update()
@@ -22,26 +28,26 @@ public class player_move : MonoBehaviour
             if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))     //左キーで左に動く
             {
 
-                transform.Translate(-0.01f, 0, 0);
+                transform.Translate(-0.1f, 0, 0);
             }
         }
         if (transform.position.x < 5.5) {
             if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))    //右キーで右に動く
             {
-                transform.Translate(0.01f, 0, 0);
+                transform.Translate(0.1f, 0, 0);
             }
         }
         if (transform.position.y < 4.5) { 
             if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))       //上キーで上に動く
             {
-                transform.Translate(0, 0.01f, 0);
+                transform.Translate(0, 0.1f, 0);
             }
          }
         if (transform.position.y > -4.5)
         {
             if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))     //下キーで下に動く
             {
-                transform.Translate(0, -0.01f, 0);
+                transform.Translate(0, -0.1f, 0);
             }
         }
 
@@ -56,6 +62,19 @@ public class player_move : MonoBehaviour
             time = 0;
         }
 
+    }   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy" ||  collision.gameObject.tag == "EnemyBullets")
+        {
+            _gameManager.PlayerLifeChange();
+            print("aaa");
+        }
+    }
+
+    public void PlayerDead()
+    {
+        transform.position = _transform;
     }
 
 }

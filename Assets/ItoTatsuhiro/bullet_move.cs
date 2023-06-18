@@ -11,7 +11,7 @@ public class bullet_move : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(0.05f, 0, 0);        //’e‚ÌˆÚ“®
+        transform.Translate(0.25f, 0, 0);        //’e‚ÌˆÚ“®
 
         if (transform.position.x > 12)
         {
