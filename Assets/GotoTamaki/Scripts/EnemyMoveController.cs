@@ -5,7 +5,11 @@ using UnityEngine;
 public class EnemyMoveController : MonoBehaviour
 {
     [SerializeField]
-    int _hp = 1;
+    GameObject _gameManeger = null;
+    [SerializeField]
+    float _waitTime = 1f;
+    [SerializeField]
+    int _enemyHp = 1;
     [SerializeField] 
     MoveMode _moveMode;
     //“®‚­‘¬‚³
@@ -15,10 +19,10 @@ public class EnemyMoveController : MonoBehaviour
     [SerializeField]
     float _amplitude = 1f;
     [SerializeField]
-    GameObject _player = default;
-    [SerializeField]
     float _stoppingDistance = 0.5f;
 
+    GameObject _player = default;
+    [SerializeField] GameObject _enemyBullet;
     float _y = 0;
     float _time = 0;
     Rigidbody2D _rb = default;
@@ -26,14 +30,17 @@ public class EnemyMoveController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _player = GameObject.FindGameObjectWithTag("Player");
+        //_enemyBullet = GameObject.FindGameObjectWithTag("EnemyBullets");
         _rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (_hp <  0)
+        if (_enemyHp <=  0)
         {
+            //_gameManeger._score += 1000;
             Destroy(this.gameObject);
         }
 
@@ -44,11 +51,12 @@ public class EnemyMoveController : MonoBehaviour
     {
         if (_moveMode == MoveMode.PlayerHomingMove)
         {
-            PlayerHomingMove();
+            PlayerHomingMove();         
         }
         else if (_moveMode == MoveMode.SinCurveMove)
         {
             SinCurveMove();
+            EnemyShoot();
         }
     }
 
@@ -79,5 +87,23 @@ public class EnemyMoveController : MonoBehaviour
         _y = Mathf.Sin(_time * _moveSpeed) * _amplitude;
         //Debug.Log(_y);
         _rb.velocity = new Vector2(_rb.velocity.x, _y);
+    }
+
+    void EnemyShoot()
+    {
+        if (_waitTime < _time)
+        {
+            //Debug.Log("Shot");
+            Instantiate(_enemyBullet, this.gameObject.transform.position, Quaternion.identity);
+        }      
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "PlayerBullets") 
+        {
+            _enemyHp--;
+            //Debug.Log("hit");
+        }
     }
 }
