@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class player_move : MonoBehaviour
 {
+    public GameObject bullet;
+
     private Rigidbody _rigidbody;
+
+    float time = 0;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -12,22 +17,45 @@ public class player_move : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))     //左キーで左に動く
+        if (transform.position.x > -5.5)
         {
-            transform.Translate(-0.01f, 0, 0);
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))     //左キーで左に動く
+            {
+
+                transform.Translate(-0.01f, 0, 0);
+            }
         }
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))    //右キーで右に動く
+        if (transform.position.x < 5.5) {
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))    //右キーで右に動く
+            {
+                transform.Translate(0.01f, 0, 0);
+            }
+        }
+        if (transform.position.y < 4.5) { 
+            if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))       //上キーで上に動く
+            {
+                transform.Translate(0, 0.01f, 0);
+            }
+         }
+        if (transform.position.y > -4.5)
         {
-            transform.Translate(0.01f, 0, 0);
+            if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))     //下キーで下に動く
+            {
+                transform.Translate(0, -0.01f, 0);
+            }
         }
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))       //上キーで上に動く
+
+        time += Time.deltaTime;
+
+        if (time > 0.1f)        //0.1秒毎に弾を出す
         {
-            transform.Translate(0, 0.01f, 0);
+            Instantiate(bullet, new Vector3(transform.position.x + 0.6f, transform.position.y + 0.3f, transform.position.z), Quaternion.identity);
+            Instantiate(bullet, new Vector3(transform.position.x + 0.6f, transform.position.y, transform.position.z), Quaternion.identity);
+            Instantiate(bullet, new Vector3(transform.position.x + 0.6f, transform.position.y - 0.3f, transform.position.z), Quaternion.identity);
+
+            time = 0;
         }
-        if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))     //下キーで下に動く
-        {
-            transform.Translate(0, -0.01f, 0);
-        }
+
     }
 
 }
