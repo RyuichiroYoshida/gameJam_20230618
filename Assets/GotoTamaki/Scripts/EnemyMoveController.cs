@@ -40,7 +40,7 @@ public class EnemyMoveController : MonoBehaviour
     {
         if (_enemyHp <=  0)
         {
-            //_gameManeger._score += 1000;
+            //_gameManeger.ScoreUpper();
             Destroy(this.gameObject);
         }
 
